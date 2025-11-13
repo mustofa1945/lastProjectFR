@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useBulletAnimation } from '@/composable/compoBullet'
-import { onMounted, ref } from 'vue'
+import { useCompoLineHeader } from '@/composable/compoLineHeader'
+import { onMounted } from 'vue'
 
 const {
   bullets,
@@ -9,62 +10,31 @@ const {
   compo,
 } = useBulletAnimation()
 
-const listHeader: Array<string> = [
-  'HOME',
-  'SERVICES',
-  'CASE STUDIES',
-  'FINTECH EXPERTISE',
-  'LETS CONNECT',
-  'LETS CONNECT',
-]
-
-const initializeHeader = () =>
-  listHeader.map((item, index) => ({
-    id: index + 1,
-    title: item,
-    width: 'w-0',
-    x_direc: 'left-0',
-    margin_top: index == 5 ? 'mt-42' : 'mt-0' ,
-  }))
-
-const reacHeader = ref(initializeHeader())
-
-const handleOverReacHeadById = (id: number): void => {
-  const getHeader = reacHeader.value.find((header) => header.id === id)
-  getHeader!.x_direc = 'left-0'
-  getHeader!.width = 'w-full'
-}
-
-const handleOutReacHeadById = (id: number): void => {
-  const getHeader = reacHeader.value.find((header) => header.id === id)
-  getHeader!.x_direc = 'right-0'
-  getHeader!.width = 'w-0'
-}
+const { handleOutReacHeadById, handleOverReacHeadById, reacHeader } = useCompoLineHeader()
 
 document.body.addEventListener('mousemove', handleMouseMove)
 
 onMounted(() => {
-  console.log(reacHeader.value)
   initializeBullets()
 })
 </script>
 <template>
   <header class="flex items-center justify-center w-full absolute top-3 z-30">
     <div
-      class="relative rounded-lg bg-[#181818]/30 hover:scale-102 transition-all duration-300 backdrop-blur-md"
+      class="group relative rounded-lg bg-[#181818]/30 hover:scale-x-110 hover:scale-y-104 transition-all duration-300 backdrop-blur-md"
     >
       <div class="flex items-center justify-between w-[240px]">
         <div
-          :class="`relative nav-parent text-xl z-20 ${compo.height.value} w-full overflow-hidden rounded-lg transition-all duration-300 delay-500`"
+          :class="`relative text-xl z-20 ${compo.height.value} w-full overflow-hidden rounded-lg transition-all duration-300 delay-500`"
         >
           <div class="w-full mt-30 h-[5rem] pl-2">
             <div
               @mouseover="handleOverReacHeadById(item.id)"
               @mouseout="handleOutReacHeadById(item.id)"
               v-for="(item, index) in reacHeader"
-              :class="['relative flex items-center' , item.margin_top]"
+              :class="['relative overflow-hidden  flex items-center', item.margin_top]"
             >
-              <a href="" class="relative text-white"
+              <a href="" :class="['relative translate-y-[100%] group-hover:translate-y-0 text-white transition-all duration-600' , item.delay]"
                 >{{ item.title }}
                 <!-- animasi garis -->
                 <span
@@ -79,7 +49,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <h1 class="px-2 absolute text-xl top-0 z-0 text-[#fff] h-[40px] flex items-center w-full">
+        <h1 class="group-hover:scale-x-125 transform origin-left transition-all duration-300 px-2 absolute text-xl top-0 z-0 text-[#fff] h-[40px] flex items-center w-full">
           BASIS
         </h1>
         <div
@@ -101,3 +71,4 @@ onMounted(() => {
     </div>
   </header>
 </template>
+

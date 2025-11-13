@@ -3,6 +3,8 @@ export interface CardRandom {
   path: string
   width: string
   heigh: string
+  bg:string
+  backdrop:string
   position: {
     top: string
     right: string
@@ -21,3 +23,14 @@ export interface BulletState extends Translation {
   opacity: string
   id: number
 }
+
+export interface ListHeaderItem {
+  id: number;
+  title: string;
+  width: string;
+  x_direc: string;
+  margin_top: string;
+  delay ?: string
+}
+
+
